@@ -65,7 +65,36 @@ function connectToWebsocket() {
  * let's wait for calls
  */
 function waitForCalls() {
-    // ... not covered by this tutorial
+    SendBirdCall.addListener('ANY UNIQUE_HANDLER_ID HERE', {
+        onRinging: (call) => {
+            /**
+             * A call arrived
+             */
+            call.onEstablished = (call) => {
+                currentCall = call;
+            };
+    
+            call.onConnected = (call) => {
+                currentCall = call;
+            };
+    
+            call.onEnded = (call) => {
+                currentCall = call;
+            };
+            /**
+             * Let's accept this call
+             */    
+            const acceptParams = {
+                callOption: {
+                    localMediaView: document.getElementById('local_video_element_id'),
+                    remoteMediaView: document.getElementById('remote_video_element_id'),
+                    audioEnabled: true,
+                    videoEnabled: true
+                }
+            };    
+            call.accept(acceptParams);
+        }
+    });    
 }
 
 /**
